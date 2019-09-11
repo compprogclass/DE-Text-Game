@@ -1,0 +1,13 @@
+use Libraries.Interface.Behaviors.Behavior
+use Libraries.Interface.Controls.TextBox
+use Libraries.Interface.Events.BehaviorEvent
+
+class SayBehavior is Behavior
+    TextBox bob = undefined 
+        action SetTextBoxes (TextBox out)
+            bob = out 
+        end
+        action Run (BehaviorEvent event)
+            
+        end 
+end  

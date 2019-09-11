@@ -1,0 +1,87 @@
+use Libraries.Game.Game
+use Libraries.System.Console 
+use Libraries.Compute.Matrix
+use Libraries.Containers.Array 
+use Libraries.Game.InputMonitor
+use Libraries.Game.Graphics.Color
+use Libraries.Interface.Controls.TextBox
+use Libraries.Interface.Layouts.ManualLayout
+use Libraries.Interface.Events.KeyboardEvent
+use Libraries.Interface.Events.KeyboardListener
+
+class Main is Game,KeyboardListener 
+    integer player = 1
+    Matrix map
+    text name = ""
+    KeyboardEvent keys 
+    InputMonitor im 
+    Color color
+    ManualLayout layout 
+    KeyboardListener kl
+    Array<text> questions
+    TextBox in = undefined 
+    TextBox out = undefined 
+
+    action Main
+        StartGame()
+    end
+
+    action resetbot
+        in:SetText("")
+        out:SetText("")
+    end
+    action convo(Array<text> words)
+       word = words:Get(0)
+        in:SetText(word)
+      
+    end
+    action presskey(KeyboardEvent key)
+        if key:keyCode = key:ESCAPE 
+            Exit ()
+        end
+  end
+    
+    action CreateGame
+       TextBox a
+       TextBox b
+       in = a
+       out = b
+       SetLayout(layout) 
+       map:Fill(2,2,0)
+       map:Set (0,0,1)  
+       map:Set (0,1,1)  
+       map:Set (1,0,1)  
+       map:Set (1,1,1)  
+       in:SetSize(799,75)
+       in:SetBackgroundColor(color:White())
+       in:SetText("Hello adventurer, what is your name?")
+       in:SetPosition(1,532)
+       out:SetSize(799,75)
+       out:SetBackgroundColor(color:Gray())
+       out:SetPosition(1,482)
+       Add (in)
+       Add (out)
+       AddKeyboardListener(me)
+       questions:Add("I Have a job for you if you will except it")
+    end
+
+    
+    action Update(number seconds)
+   //     output map:Get(player)
+        if im:IsKeyPressed (keys:LEFT)
+            player = player - 1
+        end 
+        if im:IsKeyPressed (keys:RIGHT)
+            player = player + 1
+        end 
+        if im:IsKeyPressed (keys:ESCAPE)
+            Exit()  
+        end 
+        if im:IsKeyPressed (keys:ENTER)
+            name = out:GetText()
+            output name
+            resetbot()
+            convo(questions)
+        end 
+    end
+end
